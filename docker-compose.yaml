@@ -1,0 +1,33 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: infra/Dockerfile
+        volumes:
+            - ./:/app
+        working_dir: /app
+        depends_on:
+            - database
+
+    web:
+        image: nginx:1.27
+        ports:
+            - "9090:80"
+        volumes:
+            - ./infra/nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+
+    database:
+        image: mysql:8
+        environment:
+            MYSQL_USER: "user_api"
+            MYSQL_PASSWORD: "@PassAPI"
+            MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+            MYSQL_DATABASE: "api_products"
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./infra/mysql:/var/lib/mysql
+    cache:
+        image: redis:7
