@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ConsumerProductsAPI;
+use App\Jobs\ImportProductsFromApi;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -13,20 +13,18 @@ class ImportProdcutsAPI extends Command
 
     public function handle()
     {
-        try {
+        try {            
             $id = $this->option('id');
-
-            $api = new ConsumerProductsAPI();
-            $api->consume($id);
+            ImportProductsFromApi::dispatch($id);
 
             if ($id) {
-                echo "Importando produtos com ID: " . $id . ".";
+                $this->info("Importando produtos com ID: $id");
             } else {
-                echo "Importando produtos.";
+                $this->info("Importando produtos...");
             }
 
         } catch (Throwable $th) {
-            echo 'Erro na importação: ' . $th->getMessage();
+            $this->error('Erro na importação: ' . $th->getMessage());
         }
     }
 }

@@ -21,3 +21,11 @@ git clone
 - Com o contêiner de banco de dados de pé, configure o schema e dados do banco:
 `docker compose exec -u $(id -u):$(id -g) app php artisan migrate --seed`
 
+
+- Use o comando para importar dados da api
+`php artisan products:import`
+`php artisan products:import --id=2`
+
+- Para rodar a fila e consumir os dados importado use:
+`php artisan queue:work`
+
