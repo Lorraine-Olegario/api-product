@@ -1,3 +1,5 @@
 Adicionar paginação
 Adicionar documentação da API
 Adicionar Tests
+Capturar o error com handler
+colocar em cache
