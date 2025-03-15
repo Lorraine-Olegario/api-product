@@ -16,14 +16,28 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    public function index(Request $request): ResourceCollection
+    protected $perPageMax = 100;
+
+    public function index(Request $request): ResourceCollection|JsonResponse
     {
-        // dd($request->all());
+        try{
+            $perPage = $request->input('perPage') ?? $this->perPageMax;
+            $q = Product::query();
 
-        // if () {
+            if ($request->has('name')) {
+                $q->where('name', 'like', '%'.$request->input('name').'%');
+            }
 
-        // }
-        return ProductResource::collection(Product::all());
+            if ($request->has('category')) {
+                $q->where('category', 'like', '%'.$request->input('category').'%');
+            }
+
+            $product = $q->paginate($perPage);
+            return ProductResource::collection($product);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erro ao listar produtos'], 500);
+        }
     }
 
     public function store(ProductRequest $request): JsonResponse
@@ -96,16 +110,5 @@ class ProductController extends Controller
                 'message' => 'Produto não encontrado.'
             ], 404);
         }
-    }
-    
-    public function getProductsByCategory(string $category): ResourceCollection
-    {
-        $products = Product::where('category', $category)->get();
-        return ProductResource::collection($products);
-    }
-    
-    public function getProductsWithOrWithoutImage()
-    {
-
     }
 }
