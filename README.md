@@ -15,6 +15,9 @@ git clone
 - Dê permissões ao usuário correto para escrever logs na aplicação:
 `docker compose exec app chown -R www-data:www-data /app/storage`
 
+- Garanta que o contêiner de banco de dados está de pé. Os logs devem exibir a mensagem ready for connections nas últimas linhas:
+`docker compose logs database`
+
 - Com o contêiner de banco de dados de pé, configure o schema e dados do banco:
 `docker compose exec -u $(id -u):$(id -g) app php artisan migrate --seed`
 

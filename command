@@ -1,0 +1,1 @@
+sudo chown -R lorraine-olegario:lorraine-olegario ~/Projetos/api-product
