@@ -22,7 +22,7 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:255',
+            'name' => 'required|string|min:3|max:255|unique:products,name',
             'price' => 'required|numeric',
             'description' => 'required|string',
             'category' => 'required|string|min:3|max:255',
@@ -37,6 +37,7 @@ class ProductRequest extends FormRequest
             'name.string' => 'O nome deve ser um texto.',
             'name.min' => 'O nome deve ter no mínimo 3 caracteres.',
             'name.max' => 'O nome não pode ter mais de 255 caracteres.',
+            'name.unique' => 'Já existe um produto cadastrado com este nome.',
             
             'price.required' => 'O preço é obrigatório.',
             'price.numeric' => 'O preço deve ser um número decimal válido (ex: 10.99).',

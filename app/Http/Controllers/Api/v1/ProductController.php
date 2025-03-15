@@ -16,8 +16,13 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    public function index(): ResourceCollection
+    public function index(Request $request): ResourceCollection
     {
+        // dd($request->all());
+
+        // if () {
+
+        // }
         return ProductResource::collection(Product::all());
     }
 
@@ -91,5 +96,16 @@ class ProductController extends Controller
                 'message' => 'Produto não encontrado.'
             ], 404);
         }
+    }
+    
+    public function getProductsByCategory(string $category): ResourceCollection
+    {
+        $products = Product::where('category', $category)->get();
+        return ProductResource::collection($products);
+    }
+    
+    public function getProductsWithOrWithoutImage()
+    {
+
     }
 }
