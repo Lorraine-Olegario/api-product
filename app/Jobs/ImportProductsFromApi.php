@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\DTO\ProductDTO;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Services\ConsumerProductsAPI;
@@ -20,7 +21,7 @@ class ImportProductsFromApi implements ShouldQueue
 
     public function handle(): void
     {
-        try {
+        try {        
             $api = new ConsumerProductsAPI();
             $api->consume($this->id);
 

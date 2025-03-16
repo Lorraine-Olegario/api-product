@@ -2,47 +2,84 @@
 
 namespace App\Services;
 
+use App\DTO\ProductDTO;
 use GuzzleHttp\Client;
 use Throwable;
 use App\Repositories\ProductRepository;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
-class ConsumerProductsAPI 
-{    
+class ConsumerProductsAPI
+{
     private $client;
+    private $pathAPI;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->client = new Client([
             'verify' => storage_path('cacert.pem'),
         ]);
+
+        //!mudar nome variavel .env
+        $this->pathAPI = env('API_ENDPOINT');
     }
 
     public function consume(string|null $id): void
     {
         try {
 
-            $serachById= null;
+            $serachById = null;
             if (is_string($id)) {
                 $serachById = "/$id";
             }
 
-            //!mudar nome variavel .env
-            $path = env('API_ENDPOINT');            
-            $res = $this->client->request('GET', $path . 'products'.$serachById);
-            $data = json_decode($res->getBody(), true);
-    
-            $repository = new ProductRepository();
+            $res = $this->client->request('GET', $this->pathAPI . 'products' . $serachById, [
+                'headers' => [
+                    'Accept' => 'application/json'
+                ]
+            ]);
+
+            $data = json_decode($res->getBody()->getContents(), true);
 
             if (is_string($id)) {
-                $repository->saveSingleItem($data);
+                $this->processProducts($data);
+
             } else {
-                $repository->save($data);
+                foreach ($data as $product) {
+                    $this->processProducts($product);
+                }
             }
-    
+            
         } catch (Throwable $th) {
             Log::error($th->getMessage());
             throw $th;
         }
+    }
+
+    private function processProducts(array $data): void
+    {
+        if (!$this->validateProductData($data)) {
+            Log::warning('Importação do produto inválidos', $data);
+            return;
+        }
+
+        $productDTO = new ProductDTO(
+            $data['title'],
+            $data['price'],
+            $data['description'],
+            $data['category'],
+            $data['image'],
+        );
+        
+        $repository = new ProductRepository();
+        $repository->updateAndInsert($productDTO);
+    }
+
+    private function validateProductData(array $data): bool
+    {
+        return isset($data['title']) && 
+               isset($data['price']) && 
+               is_numeric($data['price']) && 
+               isset($data['description']) && 
+               isset($data['category']);
     }
 }
