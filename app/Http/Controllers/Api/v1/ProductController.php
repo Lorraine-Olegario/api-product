@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    protected $perPageMax = 100;
+    protected $perPageMax = 50;
 
     public function index(Request $request): ResourceCollection|JsonResponse
     {

@@ -1,4 +1,7 @@
-git clone
+## Passos de configuração
+
+- git clone
+`https://github.com/Lorraine-Olegario/api-product`
 
 - Acesse a pasta recém criada:
 `cd api-poduct`
@@ -19,11 +22,12 @@ git clone
 `docker compose logs database`
 
 - Com o contêiner de banco de dados de pé, configure o schema e dados do banco:
-`docker compose exec -u $(id -u):$(id -g) app php artisan migrate --seed`
+`docker compose exec -u $(id -u):$(id -g) app php artisan migrate`
 
 
 - Use o comando para importar dados da api
 `php artisan products:import`
+
 `php artisan products:import --id=2`
 
 - Para rodar a fila e consumir os dados importado use:

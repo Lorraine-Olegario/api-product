@@ -19,10 +19,9 @@ class ImportProductsFromApi implements ShouldQueue
         private ?string $id
     ) { }
 
-    public function handle(): void
+    public function handle(ConsumerProductsAPI $api): void
     {
         try {        
-            $api = new ConsumerProductsAPI();
             $api->consume($this->id);
 
         } catch (\Throwable $th) {
