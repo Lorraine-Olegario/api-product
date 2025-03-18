@@ -1,0 +1,78 @@
+name: 'Listar todos os produtos'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/products
+    metadata:
+      groupName: 'Listar todos os produtos'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Retorna uma lista paginada de produtos com filtros opcionais por nome e categoria.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      perPage:
+        name: perPage
+        description: 'Quantidade de itens por página. Padrão: 50. Exemplo: 10'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'Filtro por nome do produto (busca parcial). Exemplo: "Mens Casual"'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      category:
+        name: category
+        description: 'Filtro por categoria do produto (busca parcial). Exemplo: "men''s clothing"'
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      perPage: 16
+      name: architecto
+      category: architecto
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data": [{"id": 1, "name": "Mens Casual Premium Slim Fit T-Shirts ", "price": "22.30", "description": "Slim-fitting style...", "category": "men''s clothing", "image_url": "https:\/\/fakestoreapi.com\/img\/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg", "created_at": "1 day ago", "updated_at": "1 day ago"}], "meta": {"current_page": 1, "per_page": 50, "total": 1}}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: '{"error": "Erro ao listar produtos"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
