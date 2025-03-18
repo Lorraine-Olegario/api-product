@@ -3,22 +3,20 @@
 namespace App\Services;
 
 use App\DTO\ProductDTO;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Throwable;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ConsumerProductsAPI
 {
-    private $client;
     private $pathAPI;
 
-    public function __construct()
-    {
-        $this->client = new Client([
-            'verify' => storage_path('cacert.pem'),
-        ]);
-
+    public function __construct(
+        private ClientInterface $client,
+        private ProductRepository $repository
+    ){
         $this->pathAPI = env('API_PRODUCTS');
     }
 
@@ -44,7 +42,7 @@ class ConsumerProductsAPI
             }
             
         } catch (Throwable $th) {
-            Log::error($th->getMessage());
+            Log::error("Erro ao consumir API: " . $th->getMessage());
             throw $th;
         }
     }
@@ -64,16 +62,24 @@ class ConsumerProductsAPI
             $data['image'],
         );
 
-        $repository = new ProductRepository();
-        $repository->updateAndInsert($productDTO);
+        $this->repository->updateAndInsert($productDTO);
     }
 
     private function validateProductData(array $data): bool
     {
-        return isset($data['title']) && $data['title'] !== '' &&
-            isset($data['price']) && is_numeric($data['price']) && $data['price'] >= 0 &&
-            isset($data['description']) && $data['description'] !== '' &&
-            isset($data['category']) && $data['category'] !== '' &&
-            (!isset($data['image']) || $data['image'] !== '');
+        $validator = Validator::make($data, [
+            'title'       => 'required|string',
+            'price'       => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'category'    => 'required|string',
+            'image'       => 'nullable|string',
+        ]);
+    
+        if ($validator->fails()) {
+            Log::warning('Produto inválido', $validator->errors()->toArray());
+            return false;
+        }
+    
+        return true;
     }
 }
