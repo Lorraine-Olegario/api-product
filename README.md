@@ -1,38 +1,91 @@
-## Passos de configuração
+# 📝 Documentação de Configuração e Uso da API de Produtos
 
-- git clone
-`https://github.com/Lorraine-Olegario/api-product`
+Esta documentação detalha os passos necessários para configurar e executar o projeto `api-product`, clonado do repositório GitHub, bem como informações básicas sobre sua API. Siga os passos abaixo para garantir uma configuração correta e o funcionamento adequado do sistema. 🚀
 
-- Acesse a pasta recém criada:
-`cd api-poduct`
+---
 
-- Instale as dependências do projeto:
-`composer install`
+## ⚙️ Passos de Configuração
 
-- Caso o arquivo .env não exista ainda em seu projeto, crie-o a partir do .env.example:
-`cp .env.example .env`
+### 1. Clonar o Repositório 📥
 
-- Inicie os contêineres do projeto:
-`docker compose up -d --build` 
+Execute o comando abaixo para clonar o projeto do GitHub:
 
-- Dê permissões ao usuário correto para escrever logs na aplicação:
-`docker compose exec app chown -R www-data:www-data /app/storage`
+```sh
+git clone https://github.com/Lorraine-Olegario/api-product
+```
 
-- Garanta que o contêiner de banco de dados está de pé. Os logs devem exibir a mensagem ready for connections nas últimas linhas:
-`docker compose logs database`
+Acesse a pasta recém criada:
 
-- Com o contêiner de banco de dados de pé, configure o schema e dados do banco:
-`docker compose exec app php artisan migrate`
+```sh
+cd api-product
+```
 
-- Use o comando para importar dados da api
-`docker compose exec app php artisan products:import`
+### 2. Instalar as Dependências
 
-`docker compose exec app php artisan products:import --id=2`
+```sh
+composer install
+```
 
-- Para rodar a fila e consumir os dados importado use:
-`php artisan queue:work`
+### 3. Configuração do Arquivo `.env`
 
+Caso o arquivo `.env` não exista ainda em seu projeto, crie-o a partir do `.env.example`:
 
-### Documentação API
+```sh
+cp .env.example .env
+```
+
+### 4. Iniciar os Contêineres do Projeto
+
+```sh
+docker compose up -d --build
+```
+
+### 5. Permissões para Logs
+
+```sh
+docker compose exec app chown -R www-data:www-data /app/storage
+```
+
+### 6. Verificar se o Banco de Dados está Funcionando
+
+Garanta que o contêiner de banco de dados está de pé. Os logs devem exibir a mensagem `ready for connections` nas últimas linhas:
+
+```sh
+docker compose logs database
+```
+
+### 7. Configurar o Schema e Dados do Banco
+
+```sh
+docker compose exec app php artisan migrate
+```
+
+### 8. Importar Dados da API
+
+```sh
+docker compose exec app php artisan products:import
+```
+
+Importar um produto específico:
+
+```sh
+docker compose exec app php artisan products:import --id=2
+```
+
+### 9. Rodar a Fila para Consumir os Dados Importados
+
+```sh
+docker compose exec app php artisan queue:work
+```
+
+### 10. Rodar testes
+
+```sh
+docker compose exec app php artisan test
+```
+
+---
+
+## 📜 Documentação da API
 
 [Acessar Documentação](http://127.0.0.1:9090/docs)
