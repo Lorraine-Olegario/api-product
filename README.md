@@ -78,6 +78,12 @@ docker compose exec app php artisan products:import --id=2
 docker compose exec app php artisan queue:work
 ```
 
+### 10. Rodar testes
+
+```sh
+docker compose exec app php artisan test
+```
+
 ---
 
 ## 📜 Documentação da API
