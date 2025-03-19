@@ -125,7 +125,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 18, 2025</li>
+        <li>Last updated: March 19, 2025</li>
     </ul>
 </div>
 
@@ -904,7 +904,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8000/api/v1/products?perPage=16&amp;name=architecto&amp;category=architecto" \
+    --get "http://localhost:8000/api/v1/products?perPage=16&amp;name=architecto&amp;category=architecto&amp;has_image=" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -918,6 +918,7 @@ const params = {
     "perPage": "16",
     "name": "architecto",
     "category": "architecto",
+    "has_image": "0",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1060,7 +1061,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="query">
     <br>
-<p>Filtro por nome do produto (busca parcial). Exemplo: &quot;Mens Casual&quot; Example: <code>architecto</code></p>
+<p>Filtro por nome do produto (busca parcial). Exemplo: &quot;<a href="http://localhost:8000/api/v1/products?name=Mens">http://localhost:8000/api/v1/products?name=Mens</a>&quot; Example: <code>architecto</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
@@ -1071,7 +1072,28 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="query">
     <br>
-<p>Filtro por categoria do produto (busca parcial). Exemplo: &quot;men's clothing&quot; Example: <code>architecto</code></p>
+<p>Filtro por categoria do produto (busca parcial). Exemplo: &quot;<a href="http://localhost:8000/api/v1/products?category=men&#039;s">http://localhost:8000/api/v1/products?category=men's</a>&quot; Example: <code>architecto</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>has_image</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+                <label data-endpoint="GETapi-v1-products" style="display: none">
+            <input type="radio" name="has_image"
+                   value="1"
+                   data-endpoint="GETapi-v1-products"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-products" style="display: none">
+            <input type="radio" name="has_image"
+                   value="0"
+                   data-endpoint="GETapi-v1-products"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Filtro para produtos com (true) ou sem (false) imagem. Exemplo: <a href="http://localhost:8000/api/v1/products?has_image=true">http://localhost:8000/api/v1/products?has_image=true</a> Example: <code>false</code></p>
             </div>
                 </form>
 

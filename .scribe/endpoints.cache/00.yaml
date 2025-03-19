@@ -34,7 +34,7 @@ endpoints:
         custom: []
       name:
         name: name
-        description: 'Filtro por nome do produto (busca parcial). Exemplo: "Mens Casual"'
+        description: 'Filtro por nome do produto (busca parcial). Exemplo: "http://localhost:8000/api/v1/products?name=Mens"'
         required: false
         example: architecto
         type: string
@@ -44,10 +44,20 @@ endpoints:
         custom: []
       category:
         name: category
-        description: 'Filtro por categoria do produto (busca parcial). Exemplo: "men''s clothing"'
+        description: 'Filtro por categoria do produto (busca parcial). Exemplo: "http://localhost:8000/api/v1/products?category=men''s"'
         required: false
         example: architecto
         type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      has_image:
+        name: has_image
+        description: 'Filtro para produtos com (true) ou sem (false) imagem. Exemplo: http://localhost:8000/api/v1/products?has_image=true'
+        required: false
+        example: false
+        type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -56,6 +66,7 @@ endpoints:
       perPage: 16
       name: architecto
       category: architecto
+      has_image: false
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
