@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    protected $perPageMax = 50;
+    protected int $perPageMax = 50;
 
     /**
      * @group Listar todos os produtos
@@ -24,8 +24,9 @@ class ProductController extends Controller
      * Retorna uma lista paginada de produtos com filtros opcionais por nome e categoria.
      *
      * @queryParam perPage integer Quantidade de itens por página. Padrão: 50. Exemplo: 10
-     * @queryParam name string Filtro por nome do produto (busca parcial). Exemplo: "Mens Casual"
-     * @queryParam category string Filtro por categoria do produto (busca parcial). Exemplo: "men's clothing"
+     * @queryParam name string Filtro por nome do produto (busca parcial). Exemplo: "http://localhost:8000/api/v1/products?name=Mens"
+     * @queryParam category string Filtro por categoria do produto (busca parcial). Exemplo: "http://localhost:8000/api/v1/products?category=men's"
+     * @queryParam has_image boolean Filtro para produtos com (true) ou sem (false) imagem. Exemplo: http://localhost:8000/api/v1/products?has_image=true
      * @response 200 {"data": [{"id": 1, "name": "Mens Casual Premium Slim Fit T-Shirts ", "price": "22.30", "description": "Slim-fitting style...", "category": "men's clothing", "image_url": "https:\/\/fakestoreapi.com\/img\/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg", "created_at": "1 day ago", "updated_at": "1 day ago"}], "meta": {"current_page": 1, "per_page": 50, "total": 1}}     
      * @response 500 {"error": "Erro ao listar produtos"}
      */
@@ -43,9 +44,24 @@ class ProductController extends Controller
                 $q->where('category', 'like', '%' . $request->input('category') . '%');
             }
 
+            if ($request->has('has_image')) {
+                $hasImage = filter_var($request->input('has_image'), FILTER_VALIDATE_BOOLEAN);
+                $q->where(function ($query) use ($hasImage) {
+                    if ($hasImage) {
+                        $query->whereNotNull('image_url')->where('image_url', '!=', '');
+                    } else {
+                        $query->where(function ($q) {
+                            $q->whereNull('image_url')->orWhere('image_url', '');
+                        });
+                    }
+                });
+            }
+
             $product = $q->paginate($perPage);
             return ProductResource::collection($product);
+
         } catch (\Exception $e) {
+            Log::error("Erro ao listar produtos: " . $e->getMessage());
             return response()->json(['error' => 'Erro ao listar produtos'], 500);
         }
     }

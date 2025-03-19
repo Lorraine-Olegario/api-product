@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ConsumerProductsAPI
 {
-    private $pathAPI;
+    private string $pathAPI;
 
     public function __construct(
         private ClientInterface $client,
@@ -25,7 +25,7 @@ class ConsumerProductsAPI
         try {
 
             $serachById = is_string($id) ? "/$id" : null;
-            $res = $this->client->request('GET', $this->pathAPI . 'products' . $serachById, [
+            $res = $this->client->request('GET', $this->pathAPI . '/products' . $serachById, [
                 'headers' => [
                     'Accept' => 'application/json'
                 ]
