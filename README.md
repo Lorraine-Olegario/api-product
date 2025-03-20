@@ -60,7 +60,16 @@ docker compose logs database
 docker compose exec app php artisan migrate
 ```
 
-### 8. Importar Dados da API
+### 8. Laravel Horizon - Rodar a Fila para Consumir os Dados Importadose Gerenciar Filas
+
+O Laravel Horizon é uma ferramenta oficial do Laravel para gerencia e filas (filas) de forma mais avançada e visual.
+[Horizon](http://127.0.0.1:9090/horizon)
+
+```sh
+docker compose exec app php artisan horizon
+```
+
+### 9. Importar Dados da API
 
 ```sh
 docker compose exec app php artisan products:import
@@ -70,15 +79,6 @@ Importar um produto específico:
 
 ```sh
 docker compose exec app php artisan products:import --id=2
-```
-
-### 9. Laravel Horizon - Rodar a Fila para Consumir os Dados Importadose Gerenciar Filas
-
-O Laravel Horizon é uma ferramenta oficial do Laravel para gerencia e filas (filas) de forma mais avançada e visual.
-[Horizon](http://127.0.0.1:9090/horizon)
-
-```sh
-docker compose exec app php artisan horizon
 ```
 
 ### 10. Rodar testes
