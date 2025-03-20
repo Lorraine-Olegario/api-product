@@ -105,9 +105,15 @@ class ProductController extends Controller
      * @response 200 {"id": 1, "name": "Mens Casual Premium Slim Fit T-Shirts ", "price": "22.30", "description": "Slim-fitting style...", "category": "men's clothing", "image_url": "https:\/\/fakestoreapi.com\/img\/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg", "created_at": "1 day ago", "updated_at": "1 day ago"}     
      * @response 404 {"message": "Produto não encontrado"}
      */
-    public function show(int $id): ProductResource
+    public function show(int $id): ProductResource|JsonResponse
     {
-        return new ProductResource(Product::findOrFail($id));
+        try {
+            return new ProductResource(Product::findOrFail($id));
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Produto não encontrado.'
+            ], 404);
+        }
     }
 
     /**
