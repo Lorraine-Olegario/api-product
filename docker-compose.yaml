@@ -26,7 +26,7 @@ services:
             MYSQL_RANDOM_ROOT_PASSWORD: "yes"
             MYSQL_DATABASE: "api_products"
         ports:
-            - "3306:3306"
+            - "3309:3306"
         volumes:
             - ./infra/mysql:/var/lib/mysql
     cache:
