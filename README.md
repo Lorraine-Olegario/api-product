@@ -1,6 +1,6 @@
 # 📝 Documentação de Configuração e Uso da API de Produtos
 
-Esta documentação detalha os passos necessários para configurar e executar o projeto `api-product`, clonado do repositório GitHub, bem como informações básicas sobre sua API. Siga os passos abaixo para garantir uma configuração correta e o funcionamento adequado do sistema. 🚀
+Este documento detalha os passos para configurar e executar o projeto `api-product`, clonado do repositório GitHub, e apresenta informações sobre sua API. Siga os passos abaixo para garantir o correto funcionamento do sistema. 🚀
 
 ---
 
@@ -20,24 +20,24 @@ Acesse a pasta recém criada:
 cd api-product
 ```
 
-### 2. Instalar as Dependências
+### 2. Iniciar os Contêineres do Projeto
 
 ```sh
-composer install
+docker compose up -d --build
 ```
 
-### 3. Configuração do Arquivo `.env`
+### 3. Instalar as Dependências
+
+```sh
+docker compose exec app composer install
+```
+
+### 4. Configuração do Arquivo `.env`
 
 Caso o arquivo `.env` não exista ainda em seu projeto, crie-o a partir do `.env.example`:
 
 ```sh
-cp .env.example .env
-```
-
-### 4. Iniciar os Contêineres do Projeto
-
-```sh
-docker compose up -d --build
+docker compose exec app cp .env.example .env
 ```
 
 ### 5. Permissões para Logs
@@ -89,3 +89,11 @@ docker compose exec app php artisan test
 ## 📜 Documentação da API
 
 [Acessar Documentação](http://127.0.0.1:9090/docs)
+
+## Laravel Horizon
+
+O Laravel Horizon é uma ferramenta oficial do Laravel para gerencia e filas (filas) de forma mais avançada e visual.
+[Horizon](http://127.0.0.1:9090/horizon)
+
+- **Para ativá-lo, execute:** `docker compose exec app php artisan horizon`
+
