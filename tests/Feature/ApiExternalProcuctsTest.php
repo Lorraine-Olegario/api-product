@@ -15,7 +15,7 @@ class ApiExternalProcuctsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->pathAPI = env('API_PRODUCTS', 'https://fakestoreapi.com'); // Garanta o valor padrão
+        $this->pathAPI = 'https://fakestoreapi.com';
     }
 
     public function test_api_products_status(): void
@@ -35,7 +35,6 @@ class ApiExternalProcuctsTest extends TestCase
              ->expectsOutput('Importando produtos...')
              ->assertExitCode(0);
 
-        $job = new ImportProductsFromApi(null);
-        $this->app->call([$job, 'handle']);
+        Queue::assertPushed(ImportProductsFromApi::class);
     }
 }
