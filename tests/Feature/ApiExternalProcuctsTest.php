@@ -38,7 +38,7 @@ class ApiExternalProcuctsTest extends TestCase
         Queue::assertPushed(ImportProductsFromApi::class);
     }*/
 
-        public function test_api_products_status(): void
+    public function test_api_products_status(): void
     {
         Http::fake([
             $this->pathAPI . '/products' => Http::response([
