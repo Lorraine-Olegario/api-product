@@ -33,11 +33,3 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test
-      
-    # ✅ PHPStan – análise estática de código
-    #- name: Run PHPStan
-    #  run: vendor/bin/phpstan analyse --level=max app
-
-    # ✅ PHPCS – verificação de estilo de código
-    #- name: Run PHP CodeSniffer
-    #  run: vendor/bin/phpcs --standard=PSR12 app
