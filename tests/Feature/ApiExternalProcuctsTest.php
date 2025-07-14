@@ -20,7 +20,11 @@ class ApiExternalProcuctsTest extends TestCase
 
     public function test_api_products_status(): void
     {
-        $response = Http::get($this->pathAPI .  '/products');
+        $response = Http::withHeaders([
+            'User-Agent' => 'LaravelTestBot/1.0',
+            'Accept' => 'application/json',
+        ])->get($this->pathAPI . '/products');
+
         $this->assertEquals(200, $response->status());
     }
 
@@ -28,7 +32,11 @@ class ApiExternalProcuctsTest extends TestCase
     {
         Queue::fake();
 
-        $response = Http::get($this->pathAPI .  '/products');
+        $response = Http::withHeaders([
+            'User-Agent' => 'LaravelTestBot/1.0',
+            'Accept' => 'application/json',
+        ])->get($this->pathAPI . '/products');
+
         $this->assertEquals(200, $response->status());
 
         $this->artisan('products:import')
