@@ -15,45 +15,64 @@ jobs:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.3'
+
     - uses: actions/checkout@v4
 
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: |
+        echo "[$(date '+%H:%M:%S')] Starting to copy .env file"
+        php -r "file_exists('.env') || copy('.env.example', '.env');"
+        echo "[$(date '+%H:%M:%S')] .env file ready"
 
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: |
+        echo "[$(date '+%H:%M:%S')] Installing composer dependencies"
+        composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        echo "[$(date '+%H:%M:%S')] Composer dependencies installed"
 
     - name: Generate key
-      run: php artisan key:generate
+      run: |
+        echo "[$(date '+%H:%M:%S')] Generating application key"
+        php artisan key:generate
+        echo "[$(date '+%H:%M:%S')] Application key generated"
 
     - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
+      run: |
+        echo "[$(date '+%H:%M:%S')] Setting directory permissions"
+        chmod -R 777 storage bootstrap/cache
+        echo "[$(date '+%H:%M:%S')] Permissions set"
 
     - name: Create Database
       run: |
+        echo "[$(date '+%H:%M:%S')] Creating SQLite database"
         mkdir -p database
         touch database/database.sqlite
+        echo "[$(date '+%H:%M:%S')] SQLite database created"
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: php artisan test
+      run: |
+        echo "[$(date '+%H:%M:%S')] Running tests"
+        php artisan test
+        echo "[$(date '+%H:%M:%S')] Tests completed"
 
     - name: Build Application
       run: |
-        echo "Starting build..."
-        # Aqui você pode adicionar comandos reais de build, por exemplo:
-        # npm install && npm run prod
-        echo "Build completed."
+        echo "[$(date '+%H:%M:%S')] Starting build..."
+        # Adicione comandos de build aqui, ex: npm install && npm run prod
+        echo "[$(date '+%H:%M:%S')] Build completed."
 
     - name: Deploy to Staging
       run: |
-        echo "Deploying to staging environment..."
-        # Adicione aqui os comandos reais de deploy para staging
-        echo "Deploy completed."
+        echo "[$(date '+%H:%M:%S')] Deploying to staging environment..."
+        # Adicione comandos reais de deploy aqui
+        echo "[$(date '+%H:%M:%S')] Deploy completed."
 
     - name: Run Smoketest
       run: |
+        echo "[$(date '+%H:%M:%S')] Running smoketest..."
         chmod +x ./smoketest.sh
         ./smoketest.sh
+        echo "[$(date '+%H:%M:%S')] Smoketest finished"
