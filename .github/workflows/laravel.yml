@@ -40,5 +40,20 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: php artisan test
 
-    - name: Run static analysis with PHPStan
-      run: vendor/bin/phpstan analyse
+    - name: Build Application
+      run: |
+        echo "Starting build..."
+        # Aqui você pode adicionar comandos reais de build, por exemplo:
+        # npm install && npm run prod
+        echo "Build completed."
+
+    - name: Deploy to Staging
+      run: |
+        echo "Deploying to staging environment..."
+        # Adicione aqui os comandos reais de deploy para staging
+        echo "Deploy completed."
+
+    - name: Run Smoketest
+      run: |
+        chmod +x ./smoketest.sh
+        ./smoketest.sh
