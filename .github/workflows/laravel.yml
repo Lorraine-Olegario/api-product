@@ -58,18 +58,44 @@ jobs:
         php artisan test
         echo "[$(date '+%H:%M:%S')] Tests completed"
 
+build:
+  runs-on: ubuntu-latest
+  needs: laravel-tests
+  steps:
+    - uses: actions/checkout@v4
     - name: Build Application
       run: |
         echo "[$(date '+%H:%M:%S')] Starting build..."
         # Adicione comandos de build aqui, ex: npm install && npm run prod
         echo "[$(date '+%H:%M:%S')] Build completed."
 
+publish:
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+    - uses: actions/checkout@v4
+    - name: Publish Artifacts
+      run: |
+        echo "Publishing build artifacts..."
+        # Exemplo: upload para storage ou repositório
+        echo "Publish completed."
+
+deploy-stg:
+  runs-on: ubuntu-latest
+  needs: publish
+  steps:
+    - uses: actions/checkout@v4
     - name: Deploy to Staging
       run: |
         echo "[$(date '+%H:%M:%S')] Deploying to staging environment..."
         # Adicione comandos reais de deploy aqui
         echo "[$(date '+%H:%M:%S')] Deploy completed."
 
+smoketest:
+  runs-on: ubuntu-latest
+  needs: deploy-stg
+  steps:
+    - uses: actions/checkout@v4
     - name: Run Smoketest
       run: |
         echo "[$(date '+%H:%M:%S')] Running smoketest..."
